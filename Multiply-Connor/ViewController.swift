@@ -6,7 +6,37 @@
 //
 
 import UIKit
+@IBDesignable extension UIButton {
 
+    @IBInspectable var borderWidth: CGFloat {
+        set {
+            layer.borderWidth = newValue
+        }
+        get {
+            return layer.borderWidth
+        }
+    }
+
+    @IBInspectable var cornerRadius: CGFloat {
+        set {
+            layer.cornerRadius = newValue
+        }
+        get {
+            return layer.cornerRadius
+        }
+    }
+
+    @IBInspectable var borderColor: UIColor? {
+        set {
+            guard let uiColor = newValue else { return }
+            layer.borderColor = uiColor.cgColor
+        }
+        get {
+            guard let color = layer.borderColor else { return nil }
+            return UIColor(cgColor: color)
+        }
+    }
+}
 class ViewController: UIViewController{
 
     @IBOutlet weak var num1Input: UITextField!
@@ -17,6 +47,7 @@ class ViewController: UIViewController{
     @IBOutlet weak var operatorSelect: UISegmentedControl!
     @IBOutlet weak var num1Slider: UISlider!
     @IBOutlet weak var num2Slider: UISlider!
+    @IBOutlet weak var evenOddImage: UIImageView!
     var operatorNum = 0
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,12 +81,15 @@ class ViewController: UIViewController{
         if(result == 64){
             let img = UIImage(named: "jeb")
             self.image.image = img
+            self.evenOddImage.image = UIImage(named: "a funny photo 2")
         } else if(result % 2 == 0){
             let img = UIImage(named: "a funny photo 2")
-            self.image.image = img
+            self.evenOddImage.image = img
+            self.image.image = nil
         } else {
             let img = UIImage(named: "an even funnier photo 2")
-            self.image.image = img
+            self.evenOddImage.image = img
+            self.image.image = nil
 
         }
         view.endEditing(true)
@@ -67,6 +101,7 @@ class ViewController: UIViewController{
         self.num2Slider.value = 0.0
         self.resultsLabel.text = "Results: Not Run Yet"
         self.image.image = nil
+        self.evenOddImage.image = nil
     }
     @IBAction func operatorChanged(_ sender: Any) {
         let selected = operatorSelect.selectedSegmentIndex
